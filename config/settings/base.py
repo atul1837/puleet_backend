@@ -4,6 +4,7 @@ Base settings to build other settings files upon.
 from pathlib import Path
 
 import environ
+from corsheaders.defaults import default_headers
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # pumeet/
@@ -229,6 +230,14 @@ EMAIL_BACKEND = env(
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
 EMAIL_TIMEOUT = 5
 
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "pumeet.test@gmail.com"
+EMAIL_HOST_PASSWORD = "pumeet@420PU"
+DEFAULT_FROM_EMAIL = "pumeet.test@gmail.com"  # same with EMAIL_HOST_USER
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
@@ -333,3 +342,15 @@ SPECTACULAR_SETTINGS = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+WEBAPP_URL = "http://localhost:3000"
+
+CORS_ALLOW_CREDENTIALS = True
+
+
+CORS_ALLOW_HEADERS = list(default_headers) + ["sentry-trace", "baggage"]
+
+CORS_ALLOWED_ORIGINS = env.list(
+    "DJANGO_CORS_ALLOWED_ORIGINS",
+    default=["http://localhost:3000", "http://127.0.0.1:3000"],
+)
