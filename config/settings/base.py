@@ -229,6 +229,14 @@ EMAIL_BACKEND = env(
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
 EMAIL_TIMEOUT = 5
 
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "pumeet.test@gmail.com"
+EMAIL_HOST_PASSWORD = "pumeet@420PU"
+DEFAULT_FROM_EMAIL = "pumeet.test@gmail.com"  # same with EMAIL_HOST_USER
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
@@ -333,3 +341,5 @@ SPECTACULAR_SETTINGS = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+WEBAPP_URL = "http://localhost:3000"
