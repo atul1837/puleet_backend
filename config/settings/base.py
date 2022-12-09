@@ -88,6 +88,8 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "pumeet.users",
+    "pumeet.candidate_profile",
+    "pumeet.seat_management",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
