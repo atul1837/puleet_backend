@@ -2,7 +2,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from pumeet.utils.models import BaseModel
-from pumeet.seat_management.models import Seats
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -85,7 +84,6 @@ class Profile(BaseModel):
         blank=True,
     )
     
-    prefrences = models.ManyToManyField(Seats, blank=True)
     submitted = models.BooleanField(default=False)
 
     def __str__(self):
