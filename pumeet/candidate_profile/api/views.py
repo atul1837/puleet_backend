@@ -31,7 +31,8 @@ class ProfileDetailView(APIView):
         diploma_board = serializers.CharField(required=False)
         diploma_marks = serializers.DecimalField(max_digits=5, decimal_places=2, required=False)
         diploma_institute = serializers.CharField(required=False)
-
+        all_india_rank = serializers.IntegerField(required=False)
+        application_number = serializers.CharField(required=False)
     class OutputSerializer(serializers.ModelSerializer):
         class Meta:
             model = Profile

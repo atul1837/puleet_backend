@@ -22,7 +22,7 @@ class Profile(BaseModel):
     OTHER = "other"
 
     GENDER_CHOICES = ((MALE, "Male"), (FEMALE, "Female"), (OTHER, "Other"))
-
+    application_number = models.CharField(max_length=256, blank=True, null=True)
     name = models.CharField(max_length=256, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     father_name = models.CharField(max_length=256, blank=True, null=True)
@@ -86,7 +86,7 @@ class Profile(BaseModel):
     all_india_rank = models.IntegerField(blank=True, null=True)
     submitted = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
-    
+
     def __str__(self):
         return self.name
 
