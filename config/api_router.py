@@ -16,4 +16,5 @@ app_name = "api"
 urlpatterns = router.urls + [
    path("candidate-profile/", include("pumeet.candidate_profile.api.urls", namespace="candidate_profile")),
    path("seat-management/", include("pumeet.seat_management.api.urls", namespace="seat_management")),
+   path("staff/", include("pumeet.staff.api.urls", namespace="staff")),
 ]  

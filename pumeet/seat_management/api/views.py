@@ -1,10 +1,26 @@
 from rest_framework import permissions, serializers, status
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from pumeet.candidate_profile.models import Profile
 from pumeet.seat_management.models import Preference
 from pumeet.seat_management.models import Branch
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+# Public API
+class BranchListView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    class OutputSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Branch
+            fields = "__all__"
+
+    def get(self, request, format=None):
+        branches = Branch.objects.all()
+        serializer = self.OutputSerializer(branches, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class PreferenceListView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -63,3 +79,4 @@ class PreferenceView(APIView):
             return Response("Preference deleted successfully", status=status.HTTP_200_OK)
         except Preference.DoesNotExist:
             return Response("Preference does not exist", status=status.HTTP_404_NOT_FOUND)
+

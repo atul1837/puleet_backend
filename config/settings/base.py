@@ -90,6 +90,7 @@ LOCAL_APPS = [
     "pumeet.users",
     "pumeet.candidate_profile",
     "pumeet.seat_management",
+    "pumeet.staff",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

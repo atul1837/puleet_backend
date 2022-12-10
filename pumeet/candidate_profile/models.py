@@ -83,9 +83,10 @@ class Profile(BaseModel):
         null=True,
         blank=True,
     )
-    
+    all_india_rank = models.IntegerField(blank=True, null=True)
     submitted = models.BooleanField(default=False)
-
+    approved = models.BooleanField(default=False)
+    
     def __str__(self):
         return self.name
 
