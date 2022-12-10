@@ -16,3 +16,4 @@ def allot_branches_based_on_preferences_and_rank():
             elif candidate.category == Profile.SCHEDULED_TRIBE and branch.st_seats > Allotment.st_count(branch):
                 Allotment.objects.create(user=candidate.user, branch=branch, category=Allotment.SCHEDULED_TRIBE, preference=preference)
                 break
+    return True

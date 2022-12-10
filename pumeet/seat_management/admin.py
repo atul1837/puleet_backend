@@ -4,3 +4,4 @@ from . import models
 
 admin.site.register(models.Branch)
 admin.site.register(models.Preference)
+admin.site.register(models.Allotment)

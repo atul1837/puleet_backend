@@ -4,8 +4,75 @@ from rest_framework.views import APIView
 from pumeet.seat_management.models import Preference
 from pumeet.seat_management.models import Branch
 from django.contrib.auth import get_user_model
+from pumeet.staff.services.allotment import allot_branches_based_on_preferences_and_rank
+from pumeet.candidate_profile.models import Profile
 
 User = get_user_model()
+
+
+class CandidateListView(APIView):
+    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
+
+    class OutputSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = User
+            fields = "__all__"
+
+    def get(self, request, format=None):
+        users = User.objects.all()
+        serializer = self.OutputSerializer(users, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class CandidateView(APIView):
+    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
+
+    class OutputSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Profile
+            fields = "__all__"
+
+    def get(self, request, user_id, format=None):
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response("User does not exist", status=status.HTTP_404_NOT_FOUND)
+        try:
+            profile = Profile.objects.get(user=user)
+        except Profile.DoesNotExist:
+            return Response("Candidate Profile does not exist", status=status.HTTP_404_NOT_FOUND)
+        serializer = self.OutputSerializer(profile)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def delete(self, request, user_id, format=None):
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response("User does not exist", status=status.HTTP_404_NOT_FOUND)
+        try:
+            profile = Profile.objects.get(user=user)
+        except Profile.DoesNotExist:
+            return Response("Candidate Profile does not exist", status=status.HTTP_404_NOT_FOUND)
+        profile.delete()
+        return Response("Candidate Profile deleted", status=status.HTTP_200_OK)
+
+
+class CandidateApproveApi(APIView):
+    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
+
+    def post(self, request, user_id, format=None):
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response("User does not exist", status=status.HTTP_404_NOT_FOUND)
+        try:
+            profile = Profile.objects.get(user=user)
+        except Profile.DoesNotExist:
+            return Response("Candidate Profile does not exist", status=status.HTTP_404_NOT_FOUND)
+        profile.is_approved = True
+        profile.save()
+        return Response("Candidate approved", status=status.HTTP_200_OK)
+
 
 class PreferenceStaffView(APIView):
     permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
@@ -69,3 +136,14 @@ class BranchView(APIView):
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
         return Response("Branch created successfully", status=status.HTTP_200_OK)
+
+
+class AllotBranchesApi(APIView):
+    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
+
+    def post(self, request, format=None):
+        try:
+            allot_branches_based_on_preferences_and_rank()
+            return Response("Branches allotted successfully", status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)

@@ -1,8 +1,7 @@
 from rest_framework import permissions, serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from pumeet.seat_management.models import Preference
-from pumeet.seat_management.models import Branch
+from pumeet.seat_management.models import Preference, Branch, Allotment
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -80,3 +79,21 @@ class PreferenceView(APIView):
         except Preference.DoesNotExist:
             return Response("Preference does not exist", status=status.HTTP_404_NOT_FOUND)
 
+
+
+class AllotmentView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    class OutputSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Allotment
+            fields = "__all__"
+
+    def get(self, request, format=None):
+        user = request.user
+        try:
+            allotments = Allotment.objects.get(user=user)
+        except Allotment.DoesNotExist:
+            return Response("User's Allotments does not exist", status=status.HTTP_404_NOT_FOUND)
+        serializer = self.OutputSerializer(allotments)
+        return Response(serializer.data, status=status.HTTP_200_OK)
