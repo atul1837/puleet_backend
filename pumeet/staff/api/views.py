@@ -69,7 +69,7 @@ class CandidateApproveApi(APIView):
             profile = Profile.objects.get(user=user)
         except Profile.DoesNotExist:
             return Response("Candidate Profile does not exist", status=status.HTTP_404_NOT_FOUND)
-        profile.is_approved = True
+        profile.approved = True
         profile.save()
         return Response("Candidate approved", status=status.HTTP_200_OK)
 
