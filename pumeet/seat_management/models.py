@@ -56,14 +56,14 @@ class Allotment(BaseModel):
         null=True
     )
 
-    def general_count(self, branch):
-        return Allotment.objects.filter(branch=branch, allotment_category=self.GENERAl).count()
+    def general_count(branch):
+        return Allotment.objects.filter(branch=branch, allotment_category=Allotment.GENERAl).count()
 
-    def sc_count(self, branch):
-        return Allotment.objects.filter(branch=branch, allotment_category=self.SCHEDULED_CASTE).count()
+    def sc_count(branch):
+        return Allotment.objects.filter(branch=branch, allotment_category=Allotment.SCHEDULED_CASTE).count()
 
-    def st_count(self, branch):
-        return Allotment.objects.filter(branch=branch, allotment_category=self.SCHEDULED_TRIBE).count()
+    def st_count(branch):
+        return Allotment.objects.filter(branch=branch, allotment_category=Allotment.SCHEDULED_TRIBE).count()
 
-    def total_count(self, branch):
+    def total_count(branch):
         return Allotment.objects.filter(branch=branch).count()

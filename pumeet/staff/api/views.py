@@ -195,6 +195,7 @@ class AllotBranchesListApi(APIView):
 
         branch = serializers.SerializerMethodField()
         user = serializers.SerializerMethodField()
+        preference = serializers.SerializerMethodField()
 
         class Meta:
             model = Allotment
@@ -216,7 +217,12 @@ class AllotBranchesListApi(APIView):
         def get_user(self, obj):
             if not obj.user:
                 return None
-            return {"id": obj.user.id, "name": obj.user.email}
+            return {"id": obj.user.id, "email": obj.user.email}
+
+        def get_preference(self, obj):
+            if not obj.preference:
+                return None
+            return {"id": obj.preference.id, "preference": obj.preference.preference}
 
     def get(self, request, format=None):
         try:
