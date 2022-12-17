@@ -99,9 +99,37 @@ class AllotmentView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     class OutputSerializer(serializers.ModelSerializer):
+
+        branch = serializers.SerializerMethodField()
+        user = serializers.SerializerMethodField()
+        preference = serializers.SerializerMethodField()
+
         class Meta:
             model = Allotment
-            fields = "__all__"
+            fields = (
+                "id",
+                "created_on",
+                "updated_on",
+                "branch",
+                "user",
+                "preference",
+                "allotment_category",
+            )
+
+        def get_branch(self, obj):
+            if not obj.branch:
+                return None
+            return {"id": obj.branch.id, "name": obj.branch.branch_name}
+
+        def get_user(self, obj):
+            if not obj.user:
+                return None
+            return {"id": obj.user.id, "email": obj.user.email}
+
+        def get_preference(self, obj):
+            if not obj.preference:
+                return None
+            return {"id": obj.preference.id, "preference": obj.preference.preference}
 
     def get(self, request, format=None):
         user = request.user
