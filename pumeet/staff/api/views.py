@@ -6,6 +6,7 @@ from pumeet.seat_management.models import Branch
 from django.contrib.auth import get_user_model
 from pumeet.staff.services.allotment import allot_branches_based_on_preferences_and_rank
 from pumeet.candidate_profile.models import Profile
+from pumeet.seat_management.models import Allotment
 
 User = get_user_model()
 
@@ -40,7 +41,9 @@ class CandidateView(APIView):
         try:
             profile = Profile.objects.get(user=user)
         except Profile.DoesNotExist:
-            return Response("Candidate Profile does not exist", status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                "Candidate Profile does not exist", status=status.HTTP_404_NOT_FOUND
+            )
         serializer = self.OutputSerializer(profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -52,7 +55,9 @@ class CandidateView(APIView):
         try:
             profile = Profile.objects.get(user=user)
         except Profile.DoesNotExist:
-            return Response("Candidate Profile does not exist", status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                "Candidate Profile does not exist", status=status.HTTP_404_NOT_FOUND
+            )
         profile.delete()
         return Response("Candidate Profile deleted", status=status.HTTP_200_OK)
 
@@ -68,7 +73,9 @@ class CandidateApproveApi(APIView):
         try:
             profile = Profile.objects.get(user=user)
         except Profile.DoesNotExist:
-            return Response("Candidate Profile does not exist", status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                "Candidate Profile does not exist", status=status.HTTP_404_NOT_FOUND
+            )
         profile.approved = True
         profile.save()
         return Response("Candidate approved", status=status.HTTP_200_OK)
@@ -85,10 +92,13 @@ class CandidateRejectApi(APIView):
         try:
             profile = Profile.objects.get(user=user)
         except Profile.DoesNotExist:
-            return Response("Candidate Profile does not exist", status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                "Candidate Profile does not exist", status=status.HTTP_404_NOT_FOUND
+            )
         profile.submitted = False
         profile.save()
         return Response("Candidate rejected", status=status.HTTP_200_OK)
+
 
 class PreferenceStaffView(APIView):
     permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
@@ -121,7 +131,9 @@ class PreferenceStaffView(APIView):
             serializer = self.OutputSerializer(preferences, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Preference.DoesNotExist:
-            return Response("User's Preferences does not exist", status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                "User's Preferences does not exist", status=status.HTTP_404_NOT_FOUND
+            )
 
     def delete(self, request, user_id, format=None):
         try:
@@ -130,9 +142,13 @@ class PreferenceStaffView(APIView):
             return Response("User does not exist", status=status.HTTP_404_NOT_FOUND)
         try:
             Preference.objects.filter(user=user).delete()
-            return Response("Preferences deleted successfully", status=status.HTTP_200_OK)
+            return Response(
+                "Preferences deleted successfully", status=status.HTTP_200_OK
+            )
         except Preference.DoesNotExist:
-            return Response("Preferences does not exist", status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                "Preferences does not exist", status=status.HTTP_404_NOT_FOUND
+            )
 
 
 class BranchView(APIView):
@@ -145,7 +161,6 @@ class BranchView(APIView):
         sc_seats = serializers.IntegerField(required=True)
         st_seats = serializers.IntegerField(required=True)
 
-    
     def post(self, request, format=None):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -169,5 +184,44 @@ class AllotBranchesApi(APIView):
         try:
             allot_branches_based_on_preferences_and_rank()
             return Response("Branches allotted successfully", status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
+class AllotBranchesListApi(APIView):
+    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
+
+    class OutputSerializer(serializers.ModelSerializer):
+
+        branch = serializers.SerializerMethodField()
+        user = serializers.SerializerMethodField()
+
+        class Meta:
+            model = Allotment
+            fields = (
+                "id",
+                "created_on",
+                "updated_on",
+                "branch",
+                "user",
+                "preference",
+                "allotment_category",
+            )
+
+        def get_branch(self, obj):
+            if not obj.branch:
+                return None
+            return {"id": obj.branch.id, "name": obj.branch.branch_name}
+
+        def get_user(self, obj):
+            if not obj.user:
+                return None
+            return {"id": obj.user.id, "name": obj.user.username}
+
+    def get(self, request, format=None):
+        try:
+            allotments = Allotment.objects.all()
+            serializer = self.OutputSerializer(allotments, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)

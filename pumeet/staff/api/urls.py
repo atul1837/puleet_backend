@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from pumeet.staff.api.views import PreferenceStaffView, BranchView, AllotBranchesApi, CandidateListView, CandidateView, CandidateApproveApi, CandidateRejectApi
+from pumeet.staff.api.views import PreferenceStaffView, BranchView, AllotBranchesApi, CandidateListView, CandidateView, CandidateApproveApi, CandidateRejectApi, AllotBranchesListApi
 
 app_name = "staff"
 
@@ -12,4 +12,5 @@ urlpatterns = [
     path('candidate/<str:user_id>', CandidateView.as_view(), name='candidate'),
     path('candidate/<str:user_id>/approve', CandidateApproveApi.as_view(), name='candidate_approve'),
     path('candidate/<str:user_id>/reject', CandidateRejectApi.as_view(), name='candidate_reject'),
+    path('allotment/list', AllotBranchesListApi.as_view(), name='allotments')
 ]

@@ -3,6 +3,7 @@ from pumeet.seat_management.models import Branch, Preference, Allotment
 
 def allot_branches_based_on_preferences_and_rank():
     candidates = Profile.objects.filter(approved=True).order_by('all_india_rank')
+    Allotment.objects.all().delete()
     for candidate in candidates:
         preferences = Preference.objects.filter(user=candidate.user).order_by('preference')
         for preference in preferences:
