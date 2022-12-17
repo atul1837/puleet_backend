@@ -74,6 +74,22 @@ class CandidateApproveApi(APIView):
         return Response("Candidate approved", status=status.HTTP_200_OK)
 
 
+class CandidateRejectApi(APIView):
+    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
+
+    def post(self, request, user_id, format=None):
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response("User does not exist", status=status.HTTP_404_NOT_FOUND)
+        try:
+            profile = Profile.objects.get(user=user)
+        except Profile.DoesNotExist:
+            return Response("Candidate Profile does not exist", status=status.HTTP_404_NOT_FOUND)
+        profile.submitted = False
+        profile.save()
+        return Response("Candidate rejected", status=status.HTTP_200_OK)
+
 class PreferenceStaffView(APIView):
     permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
 
@@ -83,9 +99,17 @@ class PreferenceStaffView(APIView):
         preference = serializers.IntegerField(required=True)
 
     class OutputSerializer(serializers.ModelSerializer):
+
+        branch = serializers.SerializerMethodField()
+
         class Meta:
             model = Preference
-            fields = "__all__"
+            fields = ("id", "created_on", "updated_on", "preference", "branch", "user")
+
+        def get_branch(self, obj):
+            if not obj.branch:
+                return None
+            return {"id": obj.branch.id, "name": obj.branch.branch_name}
 
     def get(self, request, user_id, format=None):
         try:
