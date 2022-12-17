@@ -5,7 +5,7 @@ from pumeet.staff.api.views import PreferenceStaffView, BranchView, AllotBranche
 app_name = "staff"
 
 urlpatterns = [ 
-    path('prefrence/<str:user_id>', PreferenceStaffView.as_view(), name='prefrence'),
+    path('preference/<str:user_id>', PreferenceStaffView.as_view(), name='prefrence'),
     path('branch', BranchView.as_view(), name='branch'),
     path('allot-branches', AllotBranchesApi.as_view(), name='allot'),
     path('candidate/list', CandidateListView.as_view(), name='candidates'),
