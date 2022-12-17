@@ -216,7 +216,7 @@ class AllotBranchesListApi(APIView):
         def get_user(self, obj):
             if not obj.user:
                 return None
-            return {"id": obj.user.id, "name": obj.user.username}
+            return {"id": obj.user.id, "name": obj.user.email}
 
     def get(self, request, format=None):
         try:
