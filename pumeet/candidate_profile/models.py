@@ -49,7 +49,7 @@ class Profile(BaseModel):
     )
     nationality = models.CharField(max_length=256, blank=True, null=True)
     correspondance_address = models.TextField(blank=True, null=True)
-    permanenty_address = models.TextField(blank=True, null=True)
+    permanent_address = models.TextField(blank=True, null=True)
     state = models.CharField(max_length=256, blank=True, null=True)
     tenth_board = models.TextField(blank=True, null=True)
     tenth_marks = models.DecimalField(
@@ -61,8 +61,9 @@ class Profile(BaseModel):
         blank=True,
     )
     tenth_passing_year = models.IntegerField(blank=True, null=True)
+    tenth_certificate = models.FileField(upload_to='uploads/tenth_certificate/', blank=True, null=True)
     tweleveth_board = models.TextField(blank=True, null=True)
-    tweleveth_makrs = models.DecimalField(
+    tweleveth_marks = models.DecimalField(
         _("Marks in twelveth"),
         max_digits=5,
         decimal_places=2,
@@ -71,6 +72,7 @@ class Profile(BaseModel):
         blank=True,
     )
     tweleveth_passing_year = models.IntegerField(blank=True, null=True)
+    tweleveth_certificate = models.FileField(upload_to='uploads/tweleveth_certificate/', blank=True, null=True)
     diploma_branch = models.CharField(max_length=256, blank=True, null=True)
     diploma_passing_year = models.IntegerField(blank=True, null=True)
     diploma_board = models.TextField(blank=True, null=True)
@@ -83,6 +85,7 @@ class Profile(BaseModel):
         null=True,
         blank=True,
     )
+    diploma_certificate = models.FileField(upload_to='uploads/diploma_certificate/', blank=True, null=True)
     all_india_rank = models.IntegerField(blank=True, null=True)
     submitted = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)

@@ -23,20 +23,67 @@ class ProfileDetailView(APIView):
         tenth_board = serializers.CharField(required=False)
         tenth_marks = serializers.DecimalField(max_digits=5, decimal_places=2, required=False)
         tenth_passing_year = serializers.IntegerField(required=False)
+        tenth_certificate = serializers.FileField(required=False)
         tweleveth_board = serializers.CharField(required=False)
         tweleveth_marks = serializers.DecimalField(max_digits=5, decimal_places=2, required=False)
         tweleveth_passing_year = serializers.IntegerField(required=False)
+        tweleveth_certificate = serializers.FileField(required=False)
         diploma_branch = serializers.CharField(required=False)
         diploma_passing_year = serializers.IntegerField(required=False)
         diploma_board = serializers.CharField(required=False)
         diploma_marks = serializers.DecimalField(max_digits=5, decimal_places=2, required=False)
         diploma_institute = serializers.CharField(required=False)
+        diploma_certificate = serializers.FileField(required=False)
         all_india_rank = serializers.IntegerField(required=False)
         application_number = serializers.CharField(required=False)
     class OutputSerializer(serializers.ModelSerializer):
         class Meta:
             model = Profile
-            fields = "__all__"
+            fields = (
+                "name",
+                "father_name",
+                "mother_name",
+                "date_of_birth",
+                "category",
+                "email",
+                "mobile_no",
+                "gender",
+                "nationality",
+                "correspondance_address",
+                "permanent_address",
+                "state",
+                "tenth_board",
+                "tenth_marks",
+                "tenth_passing_year",
+                "tenth_certificate",
+                "tweleveth_board",
+                "tweleveth_marks",
+                "tweleveth_passing_year",
+                "tweleveth_certificate",
+                "diploma_branch",
+                "diploma_passing_year",
+                "diploma_board",
+                "diploma_marks",
+                "diploma_institute",
+                "diploma_certificate",
+                "all_india_rank",
+                "application_number",
+            )
+
+        def get_tenth_certificate(self, obj):
+            if obj.tenth_certificate:
+                return obj.tenth_certificate.url
+            return None
+
+        def get_twelveth_certificate(self, obj):
+            if obj.twelveth_certificate:
+                return obj.twelveth_certificate.url
+            return None
+
+        def get_diploma_certificate(self, obj):
+            if obj.diploma_certificate:
+                return obj.diploma_certificate.url
+            return None
 
 
     def get(self, request, format=None):
