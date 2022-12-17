@@ -24,10 +24,10 @@ class ProfileDetailView(APIView):
         tenth_marks = serializers.DecimalField(max_digits=5, decimal_places=2, required=False)
         tenth_passing_year = serializers.IntegerField(required=False)
         tenth_certificate = serializers.FileField(required=False)
-        tweleveth_board = serializers.CharField(required=False)
-        tweleveth_marks = serializers.DecimalField(max_digits=5, decimal_places=2, required=False)
-        tweleveth_passing_year = serializers.IntegerField(required=False)
-        tweleveth_certificate = serializers.FileField(required=False)
+        twelveth_board = serializers.CharField(required=False)
+        twelveth_marks = serializers.DecimalField(max_digits=5, decimal_places=2, required=False)
+        twelveth_passing_year = serializers.IntegerField(required=False)
+        twelveth_certificate = serializers.FileField(required=False)
         diploma_branch = serializers.CharField(required=False)
         diploma_passing_year = serializers.IntegerField(required=False)
         diploma_board = serializers.CharField(required=False)
@@ -56,10 +56,10 @@ class ProfileDetailView(APIView):
                 "tenth_marks",
                 "tenth_passing_year",
                 "tenth_certificate",
-                "tweleveth_board",
-                "tweleveth_marks",
-                "tweleveth_passing_year",
-                "tweleveth_certificate",
+                "twelveth_board",
+                "twelveth_marks",
+                "twelveth_passing_year",
+                "twelveth_certificate",
                 "diploma_branch",
                 "diploma_passing_year",
                 "diploma_board",

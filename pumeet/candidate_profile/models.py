@@ -62,8 +62,8 @@ class Profile(BaseModel):
     )
     tenth_passing_year = models.IntegerField(blank=True, null=True)
     tenth_certificate = models.FileField(upload_to='uploads/tenth_certificate/', blank=True, null=True)
-    tweleveth_board = models.TextField(blank=True, null=True)
-    tweleveth_marks = models.DecimalField(
+    twelveth_board = models.TextField(blank=True, null=True)
+    twelveth_marks = models.DecimalField(
         _("Marks in twelveth"),
         max_digits=5,
         decimal_places=2,
@@ -71,8 +71,8 @@ class Profile(BaseModel):
         null=True,
         blank=True,
     )
-    tweleveth_passing_year = models.IntegerField(blank=True, null=True)
-    tweleveth_certificate = models.FileField(upload_to='uploads/tweleveth_certificate/', blank=True, null=True)
+    twelveth_passing_year = models.IntegerField(blank=True, null=True)
+    twelveth_certificate = models.FileField(upload_to='uploads/twelveth_certificate/', blank=True, null=True)
     diploma_branch = models.CharField(max_length=256, blank=True, null=True)
     diploma_passing_year = models.IntegerField(blank=True, null=True)
     diploma_board = models.TextField(blank=True, null=True)
