@@ -1,8 +1,9 @@
 from rest_framework import permissions, serializers, status
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from pumeet.candidate_profile.models import Profile
+
 
 class ProfileDetailView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -21,21 +22,28 @@ class ProfileDetailView(APIView):
         permanent_address = serializers.CharField(required=False)
         state = serializers.CharField(required=False)
         tenth_board = serializers.CharField(required=False)
-        tenth_marks = serializers.DecimalField(max_digits=5, decimal_places=2, required=False)
+        tenth_marks = serializers.DecimalField(
+            max_digits=5, decimal_places=2, required=False
+        )
         tenth_passing_year = serializers.IntegerField(required=False)
         tenth_certificate = serializers.FileField(required=False)
         tweleveth_board = serializers.CharField(required=False)
-        tweleveth_marks = serializers.DecimalField(max_digits=5, decimal_places=2, required=False)
+        tweleveth_marks = serializers.DecimalField(
+            max_digits=5, decimal_places=2, required=False
+        )
         tweleveth_passing_year = serializers.IntegerField(required=False)
         tweleveth_certificate = serializers.FileField(required=False)
         diploma_branch = serializers.CharField(required=False)
         diploma_passing_year = serializers.IntegerField(required=False)
         diploma_board = serializers.CharField(required=False)
-        diploma_marks = serializers.DecimalField(max_digits=5, decimal_places=2, required=False)
+        diploma_marks = serializers.DecimalField(
+            max_digits=5, decimal_places=2, required=False
+        )
         diploma_institute = serializers.CharField(required=False)
         diploma_certificate = serializers.FileField(required=False)
         all_india_rank = serializers.IntegerField(required=False)
         application_number = serializers.CharField(required=False)
+
     class OutputSerializer(serializers.ModelSerializer):
         class Meta:
             model = Profile
@@ -68,6 +76,8 @@ class ProfileDetailView(APIView):
                 "diploma_certificate",
                 "all_india_rank",
                 "application_number",
+                "submitted",
+                "approved",
             )
 
         def get_tenth_certificate(self, obj):
@@ -84,7 +94,6 @@ class ProfileDetailView(APIView):
             if obj.diploma_certificate:
                 return obj.diploma_certificate.url
             return None
-
 
     def get(self, request, format=None):
         user = request.user
@@ -108,8 +117,9 @@ class ProfileDetailView(APIView):
             return Response("Profile updated successfully", status=status.HTTP_200_OK)
         except Profile.DoesNotExist:
             profile = Profile.objects.create(user=user, **serializer.validated_data)
-            return Response("Profile created successfully", status=status.HTTP_201_CREATED)
-
+            return Response(
+                "Profile created successfully", status=status.HTTP_201_CREATED
+            )
 
     def delete(self, request, format=None):
         user = request.user
