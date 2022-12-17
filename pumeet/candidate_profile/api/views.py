@@ -43,6 +43,7 @@ class ProfileDetailView(APIView):
         diploma_certificate = serializers.FileField(required=False)
         all_india_rank = serializers.IntegerField(required=False)
         application_number = serializers.CharField(required=False)
+        submitted = serializers.BooleanField(required=False)
 
     class OutputSerializer(serializers.ModelSerializer):
         class Meta:
