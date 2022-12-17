@@ -15,11 +15,11 @@ class CandidateListView(APIView):
 
     class OutputSerializer(serializers.ModelSerializer):
         class Meta:
-            model = User
+            model = Profile
             fields = "__all__"
 
     def get(self, request, format=None):
-        users = User.objects.all()
+        users = Profile.objects.filter(submitted=True)
         serializer = self.OutputSerializer(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
