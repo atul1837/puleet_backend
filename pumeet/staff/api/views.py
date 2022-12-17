@@ -1,12 +1,11 @@
+from django.contrib.auth import get_user_model
 from rest_framework import permissions, serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from pumeet.seat_management.models import Preference
-from pumeet.seat_management.models import Branch
-from django.contrib.auth import get_user_model
-from pumeet.staff.services.allotment import allot_branches_based_on_preferences_and_rank
+
 from pumeet.candidate_profile.models import Profile
-from pumeet.seat_management.models import Allotment
+from pumeet.seat_management.models import Allotment, Branch, Preference
+from pumeet.staff.services.allotment import allot_branches_based_on_preferences_and_rank
 
 User = get_user_model()
 
@@ -96,6 +95,7 @@ class CandidateRejectApi(APIView):
                 "Candidate Profile does not exist", status=status.HTTP_404_NOT_FOUND
             )
         profile.submitted = False
+        profile.approved = False
         profile.save()
         return Response("Candidate rejected", status=status.HTTP_200_OK)
 
