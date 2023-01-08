@@ -9,6 +9,16 @@ Web app to facilitate pumeet examination
 
 Moved to [settings](http://cookiecutter-django.readthedocs.io/en/latest/settings.html).
 
+## Environment Variables
+
+```
+CELERY_BROKER_URL="redis://localhost:6379/0"
+REDIS_URL="redis://localhost:6379/0"
+DATABASE_URL="postgres://postgres:postgres@localhost:5432/puleet"
+DJANGO_ALLOWED_HOSTS="*"
+DJANGO_CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001,http://0.0.0.0:3000
+```
+
 ## Basic Commands
 
 ### Setting Up Your Users
